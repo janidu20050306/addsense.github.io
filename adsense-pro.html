@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdRevenue Pro — Monetize Smarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   CSS VARIABLES — DARK / LIGHT
+══════════════════════════════════════════ */
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --gold-pale: rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.25);
+  --accent: #e05c2a;
+  --green: #4db87a;
+  --red: #e05c5c;
+  --blue: #4d8fe0;
+  --trans: all 0.25s ease;
+}
+
+[data-theme="dark"] {
+  --bg:       #0a0a08;
+  --bg2:      #111110;
+  --bg3:      #1a1a17;
+  --bg4:      #222220;
+  --text:     #f0ede4;
+  --text-dim: #8a8778;
+  --text-mid: #c8c4b8;
+  --border:   rgba(255,255,255,0.07);
+  --shadow:   0 8px 32px rgba(0,0,0,0.5);
+  --card-bg:  #141412;
+  --input-bg: #1a1a17;
+}
+[data-theme="light"] {
+  --bg:       #f8f6f0;
+  --bg2:      #ffffff;
+  --bg3:      #f0ede5;
+  --bg4:      #e8e4da;
+  --text:     #1a1916;
+  --text-dim: #7a7568;
+  --text-mid: #4a4740;
+  --border:   rgba(0,0,0,0.08);
+  --shadow:   0 8px 32px rgba(0,0,0,0.1);
+  --card-bg:  #ffffff;
+  --input-bg: #f0ede5;
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+img { max-width: 100%; }
+
+/* NOISE */
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.3;
+}
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 62px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  transition: var(--trans);
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; font-weight: 700; color: var(--gold);
+  letter-spacing: -0.02em; white-space: nowrap;
+}
+.logo span { color: var(--text); font-style: italic; font-weight: 400; }
+
+.nav-tabs {
+  display: flex; gap: 0.25rem;
+  background: var(--bg3); border-radius: 6px; padding: 0.3rem;
+}
+.nav-tab {
+  padding: 0.45rem 1.2rem; border: none; cursor: pointer;
+  font-size: 0.85rem; font-weight: 500; border-radius: 4px;
+  background: transparent; color: var(--text-dim);
+  transition: var(--trans); letter-spacing: 0.02em;
+}
+.nav-tab.active { background: var(--bg2); color: var(--text); box-shadow: var(--shadow); }
+.nav-tab:hover:not(.active) { color: var(--text); }
+
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+
+.theme-toggle {
+  width: 52px; height: 28px; border-radius: 14px;
+  background: var(--bg3); border: 1px solid var(--border);
+  cursor: pointer; position: relative; transition: var(--trans);
+  flex-shrink: 0;
+}
+.theme-toggle::before {
+  content: '';
+  position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex; align-items: center; justify-content: center;
+}
+[data-theme="light"] .theme-toggle::before { transform: translateX(24px); }
+.theme-icon {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 0.7rem; pointer-events: none;
+}
+.theme-icon.moon { left: 7px; }
+.theme-icon.sun  { right: 6px; }
+
+.nav-cta {
+  background: var(--gold); color: #0a0a08;
+  padding: 0.45rem 1.2rem; border: none; cursor: pointer;
+  font-size: 0.82rem; font-weight: 500; border-radius: 4px;
+  letter-spacing: 0.03em; transition: var(--trans); white-space: nowrap;
+}
+.nav-cta:hover { background: var(--gold-light); }
+
+/* ══════════════════════════════════════════
+   PAGE VIEWS (SPA)
+══════════════════════════════════════════ */
+.page { display: none; padding-top: 62px; }
+.page.active { display: block; }
+
+/* ══════════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════════ */
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.75rem; display: block;
+}
+h1, h2, h3 { font-family: 'Playfair Display', serif; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.15; letter-spacing: -0.02em; }
+h2 em { font-style: italic; color: var(--gold); }
+
+.container { max-width: 1200px; margin-inline: auto; padding: 0 3rem; }
+.section { padding: 5rem 0; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--gold); color: #0a0a08;
+  padding: 0.8rem 1.8rem; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.02em; border-radius: 4px; transition: var(--trans);
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: transparent; color: var(--text);
+  padding: 0.8rem 1.8rem; border: 1px solid var(--border); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 400;
+  letter-spacing: 0.02em; border-radius: 4px; transition: var(--trans);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   PAGE 1 — HOME
+══════════════════════════════════════════ */
+
+/* HERO */
+.hero {
+  min-height: calc(100vh - 62px);
+  display: grid; place-items: center;
+  position: relative; overflow: hidden;
+  padding: 4rem 3rem;
+  text-align: center;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 50% at 65% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 55% at 25% 75%, rgba(224,92,42,0.05) 0%, transparent 60%);
+}
+[data-theme="light"] .hero-bg {
+  background:
+    radial-gradient(ellipse 55% 50% at 65% 40%, rgba(201,168,76,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 55% at 25% 75%, rgba(224,92,42,0.08) 0%, transparent 60%);
+}
+.hero-content { position: relative; max-width: 860px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold-pale); border: 1px solid var(--gold-border);
+  color: var(--gold); padding: 0.35rem 1rem;
+  font-size: 0.72rem; font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 20px; margin-bottom: 1.8rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 6.5vw, 6rem);
+  line-height: 1.0; letter-spacing: -0.035em;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 em { display: block; font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 1.1rem; color: var(--text-dim); font-weight: 300;
+  line-height: 1.75; max-width: 560px; margin: 1.5rem auto 0;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  margin-top: 2.5rem; animation: fadeUp 0.8s 0.3s ease both;
+}
+
+/* STATS */
+.stats-strip {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stats-strip .container {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  padding-block: 2rem;
+}
+.stat-item { text-align: center; padding: 0 1rem; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.stat-label { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.35rem; }
+
+/* HOW */
+.steps-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+  margin-top: 3.5rem; position: relative;
+}
+.steps-grid::before {
+  content: '';
+  position: absolute; top: 2.4rem; left: 12%; right: 12%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+}
+.step-card { text-align: center; }
+.step-circle {
+  width: 4.8rem; height: 4.8rem; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto;
+  font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--gold);
+  position: relative; z-index: 1; transition: var(--trans);
+}
+.step-card:hover .step-circle { background: var(--gold); color: #0a0a08; border-color: var(--gold); }
+.step-card h3 { font-size: 1rem; margin: 1rem 0 0.5rem; }
+.step-card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.65; }
+
+/* NICHES */
+.niche-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  margin-top: 3rem;
+}
+.niche-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.8rem;
+  transition: var(--trans); position: relative; overflow: hidden;
+}
+.niche-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.niche-card:hover { border-color: var(--gold-border); transform: translateY(-3px); box-shadow: var(--shadow); }
+.niche-card:hover::after { transform: scaleX(1); }
+.niche-emoji { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+.niche-card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+.niche-card p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+.niche-cpc {
+  display: inline-block; margin-top: 0.8rem;
+  background: var(--gold-pale); border: 1px solid var(--gold-border);
+  color: var(--gold); padding: 0.22rem 0.6rem;
+  font-size: 0.72rem; font-family: 'DM Mono', monospace; border-radius: 3px;
+}
+
+/* CTA SECTION */
+.home-cta {
+  background: var(--bg2); text-align: center; padding: 6rem 3rem;
+  position: relative; overflow: hidden;
+}
+.home-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.06), transparent);
+  pointer-events: none;
+}
+.home-cta .inner { position: relative; max-width: 580px; margin-inline: auto; }
+.home-cta h2 { margin-bottom: 1rem; }
+.home-cta p { color: var(--text-dim); font-size: 1rem; margin-bottom: 2rem; }
+.email-row { display: flex; max-width: 420px; margin-inline: auto; }
+.email-row input {
+  flex: 1; padding: 0.85rem 1.1rem;
+  background: var(--input-bg); border: 1px solid var(--border); border-right: none;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  border-radius: 4px 0 0 4px; outline: none; transition: var(--trans);
+}
+.email-row input:focus { border-color: var(--gold); }
+.email-row input::placeholder { color: var(--text-dim); }
+.email-row button {
+  background: var(--gold); color: #0a0a08; border: none; cursor: pointer;
+  padding: 0.85rem 1.3rem; font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem; font-weight: 500; border-radius: 0 4px 4px 0;
+  transition: var(--trans); white-space: nowrap;
+}
+.email-row button:hover { background: var(--gold-light); }
+
+/* ══════════════════════════════════════════
+   PAGE 2 — BLOG
+══════════════════════════════════════════ */
+.blog-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 3.5rem 0 2.5rem;
+}
+.blog-header h1 { font-size: clamp(2rem, 4vw, 3.2rem); }
+.blog-header p { color: var(--text-dim); margin-top: 0.5rem; font-size: 1rem; }
+
+.blog-filters {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem;
+}
+.filter-btn {
+  padding: 0.4rem 1rem; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim); cursor: pointer;
+  font-size: 0.8rem; border-radius: 20px; transition: var(--trans);
+  font-family: 'DM Sans', sans-serif;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--gold); color: #0a0a08; border-color: var(--gold);
+}
+
+.blog-grid {
+  display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;
+  padding: 3rem 0;
+}
+.blog-main { display: flex; flex-direction: column; gap: 2rem; }
+.blog-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* Featured post */
+.post-featured {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; transition: var(--trans); cursor: pointer;
+}
+.post-featured:hover { box-shadow: var(--shadow); border-color: var(--gold-border); }
+.post-thumb {
+  height: 220px; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--bg3), var(--bg4));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+}
+.post-thumb-label {
+  position: absolute; bottom: 1rem; left: 1rem;
+  background: var(--gold); color: #0a0a08;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 3px;
+}
+.post-body { padding: 1.5rem; }
+.post-meta { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem; }
+.post-cat {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--gold); font-family: 'DM Mono', monospace;
+}
+.post-date { font-size: 0.78rem; color: var(--text-dim); }
+.post-featured h2 { font-size: 1.5rem; line-height: 1.25; margin-bottom: 0.75rem; }
+.post-featured p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; }
+.post-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+}
+.post-author { display: flex; align-items: center; gap: 0.6rem; }
+.author-avatar {
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--gold-pale); border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+}
+.author-name { font-size: 0.8rem; font-weight: 500; }
+.read-time { font-size: 0.75rem; color: var(--text-dim); }
+
+/* Small posts */
+.post-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.3rem; transition: var(--trans);
+  cursor: pointer; display: flex; gap: 1rem;
+}
+.post-card:hover { border-color: var(--gold-border); transform: translateX(4px); }
+.post-card-thumb {
+  width: 70px; height: 70px; flex-shrink: 0; border-radius: 6px;
+  background: var(--bg3); display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+.post-card-body { flex: 1; }
+.post-card h3 { font-size: 0.92rem; line-height: 1.35; margin-bottom: 0.3rem; }
+.post-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+.post-card-meta { display: flex; gap: 0.75rem; margin-top: 0.5rem; align-items: center; }
+
+/* Sidebar */
+.sidebar-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.4rem;
+}
+.sidebar-card h4 {
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--gold); font-family: 'DM Mono', monospace; margin-bottom: 1rem;
+}
+.trending-item {
+  display: flex; gap: 0.75rem; padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border); cursor: pointer; transition: var(--trans);
+}
+.trending-item:last-child { border-bottom: none; padding-bottom: 0; }
+.trending-item:hover { color: var(--gold); }
+.trending-num {
+  font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--gold);
+  flex-shrink: 0; width: 1.5rem;
+}
+.trending-title { font-size: 0.83rem; line-height: 1.4; }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag {
+  padding: 0.3rem 0.75rem; border-radius: 20px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 0.75rem; color: var(--text-dim); cursor: pointer; transition: var(--trans);
+}
+.tag:hover { background: var(--gold-pale); border-color: var(--gold-border); color: var(--gold); }
+
+/* ARTICLE VIEW */
+.article-view { display: none; }
+.article-view.active { display: block; }
+.blog-list-view { }
+.blog-list-view.hidden { display: none; }
+
+.article-back {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--text-dim); font-size: 0.85rem; cursor: pointer;
+  transition: var(--trans); padding: 2rem 0 0;
+}
+.article-back:hover { color: var(--gold); }
+
+.article-container { max-width: 720px; margin-inline: auto; padding: 2rem 3rem 5rem; }
+.article-container .post-meta { margin-bottom: 1rem; }
+.article-container h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.15;
+  letter-spacing: -0.02em; margin-bottom: 1.5rem;
+}
+.article-lead {
+  font-size: 1.1rem; color: var(--text-mid); line-height: 1.8;
+  border-left: 3px solid var(--gold); padding-left: 1.2rem; margin-bottom: 2rem;
+}
+.article-body { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; }
+.article-body h3 {
+  font-size: 1.3rem; color: var(--text); margin: 2rem 0 0.75rem;
+}
+.article-body p { margin-bottom: 1.2rem; }
+.article-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+.article-body li { margin-bottom: 0.5rem; }
+.article-body .callout {
+  background: var(--gold-pale); border: 1px solid var(--gold-border);
+  border-radius: 6px; padding: 1.2rem 1.4rem; margin: 1.5rem 0;
+  font-size: 0.88rem; color: var(--text);
+}
+.article-body .callout strong { color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   PAGE 3 — DASHBOARD
+══════════════════════════════════════════ */
+.dashboard { padding: 2rem 0 4rem; }
+
+.dash-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem;
+}
+.dash-title h2 { font-size: 1.5rem; }
+.dash-title p { font-size: 0.83rem; color: var(--text-dim); margin-top: 0.2rem; }
+.dash-controls { display: flex; gap: 0.5rem; }
+.period-btn {
+  padding: 0.4rem 0.9rem; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim); cursor: pointer;
+  font-size: 0.78rem; border-radius: 4px; transition: var(--trans);
+  font-family: 'DM Sans', sans-serif;
+}
+.period-btn.active { background: var(--gold); color: #0a0a08; border-color: var(--gold); }
+
+/* KPI Cards */
+.kpi-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.kpi-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.4rem; position: relative; overflow: hidden;
+  transition: var(--trans);
+}
+.kpi-card:hover { border-color: var(--gold-border); }
+.kpi-card::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.08), transparent);
+}
+.kpi-icon {
+  font-size: 1.4rem; margin-bottom: 0.8rem; display: block;
+}
+.kpi-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 700; color: var(--text); line-height: 1;
+}
+.kpi-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.kpi-change {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-size: 0.78rem; font-weight: 500; margin-top: 0.6rem;
+}
+.kpi-change.up { color: var(--green); }
+.kpi-change.down { color: var(--red); }
+
+/* Charts Row */
+.charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+.chart-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.4rem;
+}
+.chart-card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem;
+}
+.chart-card-header h4 { font-size: 0.92rem; font-weight: 500; }
+.chart-legend { display: flex; gap: 1rem; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--text-dim); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* SVG Chart */
+.chart-svg { width: 100%; overflow: visible; }
+
+/* Pie / Donut */
+.donut-wrap { display: flex; align-items: center; gap: 1.5rem; }
+.donut-svg { width: 130px; height: 130px; flex-shrink: 0; }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+.donut-legend-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.donut-legend-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; }
+.donut-legend-bar-wrap { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.donut-legend-bar { height: 100%; border-radius: 2px; }
+.donut-legend-pct { font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--text-dim); }
+
+/* Bottom row */
+.bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.data-table th {
+  text-align: left; padding: 0.6rem 0.8rem;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-dim); border-bottom: 1px solid var(--border);
+  font-weight: 500; font-family: 'DM Mono', monospace;
+}
+.data-table td {
+  padding: 0.75rem 0.8rem; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--bg3); }
+.td-title { font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+.td-badge {
+  font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 3px;
+  font-family: 'DM Mono', monospace;
+}
+.badge-up { background: rgba(77,184,122,0.15); color: var(--green); }
+.badge-dn { background: rgba(224,92,92,0.15); color: var(--red); }
+.badge-fl { background: var(--gold-pale); color: var(--gold); }
+
+/* Geo bars */
+.geo-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+.geo-item { }
+.geo-header { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
+.geo-country { font-size: 0.82rem; }
+.geo-val { font-size: 0.8rem; font-family: 'DM Mono', monospace; color: var(--gold); }
+.geo-bar-bg { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.geo-bar-fill { height: 100%; border-radius: 3px; background: var(--gold); transition: width 1s cubic-bezier(0.34,1.56,0.64,1); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 2rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+footer p { font-size: 0.78rem; color: var(--text-dim); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.78rem; color: var(--text-dim); transition: var(--trans); }
+.footer-links a:hover { color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 960px) {
+  nav { padding: 0 1.5rem; }
+  .container { padding: 0 1.5rem; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .steps-grid::before { display: none; }
+  .niche-grid { grid-template-columns: 1fr 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-sidebar { display: none; }
+  .charts-row { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .bottom-row { grid-template-columns: 1fr; }
+  .stats-strip .container { grid-template-columns: 1fr 1fr; }
+  .article-container { padding: 2rem 1.5rem 4rem; }
+}
+@media (max-width: 600px) {
+  .nav-tabs { display: none; }
+  .niche-grid { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 3rem 1.5rem; }
+  footer { flex-direction: column; text-align: center; padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVIGATION ═══════════ -->
+<nav>
+  <div class="logo">Ad<span>Revenue</span> Pro</div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home', this)">🏠 Home</button>
+    <button class="nav-tab" onclick="showPage('blog', this)">📝 Blog</button>
+    <button class="nav-tab" onclick="showPage('dashboard', this)">📊 Dashboard</button>
+  </div>
+
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+      <span class="theme-icon moon">🌙</span>
+      <span class="theme-icon sun">☀️</span>
+    </button>
+    <button class="nav-cta" onclick="showPage('dashboard', document.querySelector('.nav-tab:nth-child(3)'))">Live Stats</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">◆ Google AdSense Monetization Platform</div>
+      <h1>Turn Traffic Into<br><em>Real Income</em></h1>
+      <p class="hero-sub">Master every layer of AdSense — from niche selection and approval to advanced RPM optimization and scaling to $5K/month.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('dashboard', document.querySelector('.nav-tab:nth-child(3)'))">📊 View Dashboard</button>
+        <button class="btn-outline" onclick="showPage('blog', document.querySelector('.nav-tab:nth-child(2)'))">Read Strategies →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stat-item"><div class="stat-num">$2M+</div><div class="stat-label">Paid daily by AdSense</div></div>
+      <div class="stat-item"><div class="stat-num">2M+</div><div class="stat-label">Active publishers</div></div>
+      <div class="stat-item"><div class="stat-num">$15</div><div class="stat-label">Max CPC (finance)</div></div>
+      <div class="stat-item"><div class="stat-num">68%</div><div class="stat-label">Revenue share</div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:3.5rem">
+        <span class="section-tag">// The Process</span>
+        <h2>Four Steps to Your <em>First Paycheck</em></h2>
+        <p style="color:var(--text-dim); margin-top:0.75rem; max-width:480px; margin-inline:auto; font-size:0.95rem;">The proven path from zero to passive income with Google AdSense.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card"><div class="step-circle">01</div><h3>Build Your Site</h3><p>Create a content-rich website in a high-CPC niche. Focus on quality, original content that ranks organically in search results.</p></div>
+        <div class="step-card"><div class="step-circle">02</div><h3>Apply to AdSense</h3><p>Submit your site for review. Ensure content meets policy requirements — original, sufficient, and advertiser-friendly.</p></div>
+        <div class="step-card"><div class="step-circle">03</div><h3>Place Ads Strategically</h3><p>Use Auto Ads or manually place units for maximum viewability. Above-the-fold and in-content placements perform best.</p></div>
+        <div class="step-card"><div class="step-circle">04</div><h3>Scale & Optimize</h3><p>Grow organic traffic, experiment with ad formats, track RPM, and reinvest into content to compound earnings over time.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NICHES -->
+  <div class="section" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:0.5rem">
+        <span class="section-tag">// High-Value Niches</span>
+        <h2>Pick a <em>Lucrative</em> Topic</h2>
+      </div>
+      <div class="niche-grid">
+        <div class="niche-card"><span class="niche-emoji">💼</span><h3>Personal Finance</h3><p>Credit cards, loans, investing. Advertisers pay heavily for finance-intent audiences.</p><span class="niche-cpc">CPC $3–$15</span></div>
+        <div class="niche-card"><span class="niche-emoji">⚖️</span><h3>Legal Services</h3><p>Attorneys, litigation, immigration. Extremely high advertiser competition drives up CPC.</p><span class="niche-cpc">CPC $5–$20</span></div>
+        <div class="niche-card"><span class="niche-emoji">🏥</span><h3>Health & Medical</h3><p>Treatments, wellness, supplements. Pharma advertisers spend enormous budgets.</p><span class="niche-cpc">CPC $2–$10</span></div>
+        <div class="niche-card"><span class="niche-emoji">💻</span><h3>Technology & SaaS</h3><p>Software reviews, cybersecurity, B2B tech. High-intent buyers yield excellent returns.</p><span class="niche-cpc">CPC $2–$8</span></div>
+        <div class="niche-card"><span class="niche-emoji">🎓</span><h3>Online Education</h3><p>Certifications, bootcamps, skills training. EdTech companies pay well for learner audiences.</p><span class="niche-cpc">CPC $1.5–$7</span></div>
+        <div class="niche-card"><span class="niche-emoji">✈️</span><h3>Travel & Hospitality</h3><p>Booking sites, travel credit cards, hotels compete aggressively in this rich niche.</p><span class="niche-cpc">CPC $1–$5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="home-cta">
+    <div class="inner">
+      <span class="section-tag">// Start Today</span>
+      <h2>Ready to Earn Your First <em>$1,000?</em></h2>
+      <p>Join thousands of publishers turning content into consistent passive income.</p>
+      <div class="email-row">
+        <input type="email" id="homeEmail" placeholder="Your email address">
+        <button onclick="submitEmail()">Get Free Guide →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="logo">Ad<span>Revenue</span> Pro</div>
+    <p>© 2025 AdRevenue Pro — For educational purposes only.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: BLOG
+═══════════════════════════════════ -->
+<div id="page-blog" class="page">
+
+  <!-- Blog list view -->
+  <div class="blog-list-view" id="blogList">
+    <div class="blog-header">
+      <div class="container">
+        <span class="section-tag">// Knowledge Base</span>
+        <h1>AdSense <em>Strategies</em> & Guides</h1>
+        <p>In-depth articles on monetization, traffic growth, and optimization — updated weekly.</p>
+        <div class="blog-filters">
+          <button class="filter-btn active" onclick="filterPosts('all', this)">All</button>
+          <button class="filter-btn" onclick="filterPosts('optimization', this)">Optimization</button>
+          <button class="filter-btn" onclick="filterPosts('traffic', this)">Traffic</button>
+          <button class="filter-btn" onclick="filterPosts('niche', this)">Niche Research</button>
+          <button class="filter-btn" onclick="filterPosts('approval', this)">Approval</button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="blog-grid">
+        <div class="blog-main" id="blogMainPosts">
+
+          <!-- Featured Post -->
+          <div class="post-featured" data-category="optimization" onclick="openArticle('ad-placement')">
+            <div class="post-thumb">💡<div class="post-thumb-label">Featured</div></div>
+            <div class="post-body">
+              <div class="post-meta">
+                <span class="post-cat">Optimization</span>
+                <span class="post-date">Feb 20, 2025</span>
+              </div>
+              <h2>The Definitive Ad Placement Guide: How to Double Your CTR in 30 Days</h2>
+              <p>Ad placement is the single highest-leverage optimization you can make after approval. Most publishers leave 40–60% of potential earnings on the table by using default placement. This guide shows you exactly where to put your units.</p>
+              <div class="post-footer">
+                <div class="post-author">
+                  <div class="author-avatar">👤</div>
+                  <span class="author-name">James Whitfield</span>
+                </div>
+                <span class="read-time">⏱ 8 min read</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post Cards -->
+          <div class="post-card" data-category="traffic" onclick="openArticle('seo-traffic')">
+            <div class="post-card-thumb">🚀</div>
+            <div class="post-card-body">
+              <div class="post-meta" style="margin-bottom:0.4rem">
+                <span class="post-cat">Traffic</span><span class="post-date">Feb 14, 2025</span>
+              </div>
+              <h3>90-Day SEO Blueprint: From 0 to 10,000 Monthly Visitors</h3>
+              <p>A month-by-month playbook covering keyword research, on-page SEO, and link building strategies proven to drive organic AdSense traffic.</p>
+              <div class="post-card-meta">
+                <span class="read-time">⏱ 12 min</span>
+                <span class="niche-cpc" style="font-size:0.68rem">Traffic</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-card" data-category="niche" onclick="openArticle('niche-research')">
+            <div class="post-card-thumb">🔍</div>
+            <div class="post-card-body">
+              <div class="post-meta" style="margin-bottom:0.4rem">
+                <span class="post-cat">Niche Research</span><span class="post-date">Feb 8, 2025</span>
+              </div>
+              <h3>How to Find $5+ CPC Niches Using Free Tools in 2025</h3>
+              <p>Discover the exact methodology top publishers use to identify high-paying niches before investing time into content creation.</p>
+              <div class="post-card-meta">
+                <span class="read-time">⏱ 7 min</span>
+                <span class="niche-cpc" style="font-size:0.68rem">Niche</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-card" data-category="approval" onclick="openArticle('adsense-approval')">
+            <div class="post-card-thumb">✅</div>
+            <div class="post-card-body">
+              <div class="post-meta" style="margin-bottom:0.4rem">
+                <span class="post-cat">Approval</span><span class="post-date">Jan 29, 2025</span>
+              </div>
+              <h3>AdSense Approval in 2025: The 7 Mistakes That Get You Rejected</h3>
+              <p>Google's review process is stricter than ever. Learn the exact policy violations that cause rejection — and how to fix each one before applying.</p>
+              <div class="post-card-meta">
+                <span class="read-time">⏱ 6 min</span>
+                <span class="niche-cpc" style="font-size:0.68rem">Approval</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-card" data-category="optimization" onclick="openArticle('rpm-optimization')">
+            <div class="post-card-thumb">📈</div>
+            <div class="post-card-body">
+              <div class="post-meta" style="margin-bottom:0.4rem">
+                <span class="post-cat">Optimization</span><span class="post-date">Jan 22, 2025</span>
+              </div>
+              <h3>RPM Optimization: Why $2 vs $15 RPM Comes Down to These 5 Factors</h3>
+              <p>RPM is the ultimate measure of your site's monetization health. Understand the five levers — niche, geo, device, ad density, and content quality.</p>
+              <div class="post-card-meta">
+                <span class="read-time">⏱ 9 min</span>
+                <span class="niche-cpc" style="font-size:0.68rem">RPM</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="blog-sidebar">
+          <div class="sidebar-card">
+            <h4>🔥 Trending This Week</h4>
+            <div class="trending-item" onclick="openArticle('ad-placement')"><span class="trending-num">01</span><span class="trending-title">The Definitive Ad Placement Guide</span></div>
+            <div class="trending-item" onclick="openArticle('rpm-optimization')"><span class="trending-num">02</span><span class="trending-title">RPM Optimization: 5 Key Factors</span></div>
+            <div class="trending-item" onclick="openArticle('niche-research')"><span class="trending-num">03</span><span class="trending-title">Find $5+ CPC Niches with Free Tools</span></div>
+            <div class="trending-item" onclick="openArticle('seo-traffic')"><span class="trending-num">04</span><span class="trending-title">90-Day SEO Blueprint to 10K Visitors</span></div>
+            <div class="trending-item" onclick="openArticle('adsense-approval')"><span class="trending-num">05</span><span class="trending-title">AdSense Approval: 7 Rejection Mistakes</span></div>
+          </div>
+
+          <div class="sidebar-card">
+            <h4>🏷 Topics</h4>
+            <div class="tag-cloud">
+              <span class="tag">RPM</span><span class="tag">CTR</span><span class="tag">CPC</span>
+              <span class="tag">SEO</span><span class="tag">Backlinks</span><span class="tag">Content</span>
+              <span class="tag">Finance Niche</span><span class="tag">Auto Ads</span>
+              <span class="tag">Core Web Vitals</span><span class="tag">Geo Targeting</span>
+              <span class="tag">Ad Density</span><span class="tag">Policy</span>
+            </div>
+          </div>
+
+          <div class="sidebar-card" style="background:var(--gold-pale); border-color:var(--gold-border)">
+            <h4>📬 Weekly Digest</h4>
+            <p style="font-size:0.82rem; color:var(--text-dim); margin-bottom:1rem; line-height:1.6">Get the best AdSense tips delivered every Tuesday.</p>
+            <input type="email" placeholder="your@email.com" style="width:100%; padding:0.6rem 0.8rem; background:var(--input-bg); border:1px solid var(--gold-border); color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.82rem; border-radius:4px; outline:none; margin-bottom:0.6rem">
+            <button class="btn-primary" style="width:100%; justify-content:center; font-size:0.82rem; padding:0.65rem">Subscribe →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article view (hidden by default) -->
+  <div class="article-view" id="articleView">
+    <div class="container">
+      <span class="article-back" onclick="closeArticle()">← Back to Blog</span>
+    </div>
+    <div class="article-container" id="articleContent"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: DASHBOARD
+═══════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <div class="container dashboard">
+
+    <!-- Header -->
+    <div class="dash-header">
+      <div class="dash-title">
+        <h2>Analytics <em>Dashboard</em></h2>
+        <p>Last updated: Feb 26, 2025 · 14:32 UTC</p>
+      </div>
+      <div class="dash-controls">
+        <button class="period-btn" onclick="setPeriod('7d', this)">7D</button>
+        <button class="period-btn active" onclick="setPeriod('30d', this)">30D</button>
+        <button class="period-btn" onclick="setPeriod('90d', this)">90D</button>
+        <button class="period-btn" onclick="setPeriod('1y', this)">1Y</button>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <span class="kpi-icon">💰</span>
+        <div class="kpi-val" id="kpi-earnings">$1,847</div>
+        <div class="kpi-label">Total Earnings</div>
+        <div class="kpi-change up">▲ +23.4%</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">👁</span>
+        <div class="kpi-val" id="kpi-pageviews">24.1K</div>
+        <div class="kpi-label">Pageviews</div>
+        <div class="kpi-change up">▲ +18.2%</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📊</span>
+        <div class="kpi-val" id="kpi-rpm">$8.42</div>
+        <div class="kpi-label">Page RPM</div>
+        <div class="kpi-change up">▲ +4.3%</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🖱</span>
+        <div class="kpi-val" id="kpi-ctr">1.89%</div>
+        <div class="kpi-label">CTR</div>
+        <div class="kpi-change down">▼ -0.2%</div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+      <!-- Line Chart -->
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h4>Revenue & Pageviews Over Time</h4>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Revenue</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Pageviews</div>
+          </div>
+        </div>
+        <svg class="chart-svg" id="lineChart" viewBox="0 0 600 180"></svg>
+      </div>
+
+      <!-- Donut Chart -->
+      <div class="chart-card">
+        <div class="chart-card-header"><h4>Traffic by Device</h4></div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 130 130" id="donutChart"></svg>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="bottom-row">
+      <!-- Top Pages Table -->
+      <div class="chart-card">
+        <div class="chart-card-header"><h4>Top Earning Pages</h4></div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>RPM</th>
+              <th>Views</th>
+              <th>Earnings</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="pagesTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Geo Revenue -->
+      <div class="chart-card">
+        <div class="chart-card-header"><h4>Revenue by Country</h4></div>
+        <div class="geo-list" id="geoList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ THANK-YOU MODAL ═══════════ -->
+<div id="tyOverlay" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(10,10,8,0.96); backdrop-filter:blur(16px); place-items:center;" onclick="if(event.target===this)closeTy()">
+  <div style="max-width:520px; width:90%; background:var(--card-bg); border:1px solid var(--gold-border); border-radius:10px; padding:3rem 2.5rem; text-align:center; animation:fadeUp 0.4s ease; position:relative">
+    <button onclick="closeTy()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--text-dim);font-size:1.3rem;cursor:pointer">✕</button>
+    <div style="width:4.5rem;height:4.5rem;background:var(--gold-pale);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.5rem">🎉</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.5rem">You're <em style="color:var(--gold)">In!</em></h3>
+    <p style="color:var(--text-dim);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem">Your free AdSense guide is ready. Check your inbox — or download it directly below.</p>
+    <button class="btn-primary" style="width:100%;justify-content:center" onclick="this.textContent='✓ Downloaded!';setTimeout(()=>this.textContent='⬇ Download Free Guide PDF',2500)">⬇ Download Free Guide PDF</button>
+  </div>
+</div>
+
+
+<script>
+// ══════════════════════════════════════════
+//  THEME TOGGLE
+// ══════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', html.dataset.theme);
+}
+// Restore saved theme
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+
+// ══════════════════════════════════════════
+//  PAGE NAVIGATION
+// ══════════════════════════════════════════
+function showPage(id, tabEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'dashboard') renderDashboard();
+}
+
+// ══════════════════════════════════════════
+//  BLOG
+// ══════════════════════════════════════════
+function filterPosts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#blogMainPosts [data-category]').forEach(el => {
+    el.style.display = (cat === 'all' || el.dataset.category === cat) ? '' : 'none';
+  });
+}
+
+const articles = {
+  'ad-placement': {
+    cat: 'Optimization', date: 'Feb 20, 2025', readTime: '8 min read',
+    title: 'The Definitive Ad Placement Guide: How to Double Your CTR in 30 Days',
+    lead: 'Ad placement is the single highest-leverage optimization available after AdSense approval. Most publishers leave 40–60% of potential earnings on the table by relying on default placement.',
+    body: `
+      <h3>Why Placement Matters More Than Format</h3>
+      <p>Google serves ads based on context and viewability signals. An ad that is never scrolled into view earns you nothing — even if it technically appears on the page. This is why placement is paramount.</p>
+      <div class="callout"><strong>Key Insight:</strong> Viewability is now a primary signal for premium advertisers bidding in Google's auction. Non-viewable ads receive lower bids — sometimes 50% less — regardless of niche.</div>
+      <h3>The 3 Highest-Performing Placement Zones</h3>
+      <ul>
+        <li><strong>Below the headline, above the first paragraph</strong> — The single most valuable real estate on any article page. Users have intent to read and are psychologically primed to engage.</li>
+        <li><strong>Within the content body (after paragraph 3–4)</strong> — Contextually relevant to what the reader just consumed. In-content units consistently outperform sidebar ads 2–3x.</li>
+        <li><strong>Sticky sidebar (on desktop)</strong> — A 300×600 unit that scrolls with the reader. Maximizes viewability time without disrupting reading flow.</li>
+      </ul>
+      <h3>What to Avoid</h3>
+      <p>Footer ads, below-the-fold sidebar ads, and pop-under/interstitial units tend to perform poorly and risk policy violations. Google's algorithms penalize sites with excessive ad density on above-the-fold content.</p>
+      <div class="callout"><strong>Pro Tip:</strong> Use Google's Ad Experience Report in Search Console to check if your placement triggers any user-experience flags before scaling traffic.</div>
+      <h3>The 30-Day Test Framework</h3>
+      <p>Run each placement configuration for a minimum of 7 days before drawing conclusions. Compare RPM (not just earnings) across configurations since traffic volume may fluctuate. Test one change at a time so you can isolate what's driving improvements.</p>
+      <p>Most publishers who implement the three-zone strategy above report a 40–80% improvement in CTR within the first month — often without any increase in traffic.</p>
+    `
+  },
+  'seo-traffic': {
+    cat: 'Traffic', date: 'Feb 14, 2025', readTime: '12 min read',
+    title: '90-Day SEO Blueprint: From 0 to 10,000 Monthly Visitors',
+    lead: 'Organic traffic is the foundation of sustainable AdSense income. This month-by-month plan shows you exactly how to build it from scratch — no backlinks, no budget required.',
+    body: `
+      <h3>Month 1: Research & Foundation</h3>
+      <p>Weeks 1–2 should be entirely devoted to keyword research. Use free tools (Google Keyword Planner, Ubersuggest free tier, AnswerThePublic) to build a list of 50–100 low-competition, high-intent keywords in your chosen niche.</p>
+      <div class="callout"><strong>Target metric:</strong> Keywords with monthly search volume between 500–5,000 and keyword difficulty below 30. These are your "quick wins" in months 2–3.</div>
+      <p>Set up your site with a clean, fast theme. Install Google Analytics and Google Search Console from day one. Configure your sitemap and robots.txt correctly. This infrastructure work is unglamorous but essential.</p>
+      <h3>Month 2: Content Velocity</h3>
+      <p>Publish 2–3 long-form articles per week (1,500+ words each), targeting your researched keywords. Structure every article with a clear hierarchy: one H1, logical H2/H3 subheadings, and a natural keyword distribution (1–2% density).</p>
+      <ul>
+        <li>Focus on "how-to" and "best X for Y" formats — these attract commercial intent traffic with high CPC</li>
+        <li>Include original data, screenshots, or examples to increase dwell time and social sharing</li>
+        <li>Build internal links between related articles to help Google understand your site architecture</li>
+      </ul>
+      <h3>Month 3: Promotion & Compounding</h3>
+      <p>By month 3, you should have 20–30 indexed articles. Start promoting on niche Reddit communities, Quora answers, and relevant Facebook groups. Even a few hundred referral clicks can bootstrap your Google rankings.</p>
+      <p>By day 90, sites following this blueprint typically have 3,000–12,000 monthly organic visitors depending on niche competitiveness. Once you hit 1,000 daily pageviews, AdSense earnings begin to feel meaningful.</p>
+    `
+  },
+  'niche-research': {
+    cat: 'Niche Research', date: 'Feb 8, 2025', readTime: '7 min read',
+    title: 'How to Find $5+ CPC Niches Using Free Tools in 2025',
+    lead: 'The niche you choose at the beginning determines your ceiling. Here is the exact methodology to identify high-CPC niches before you write a single word of content.',
+    body: `
+      <h3>Why CPC Varies Wildly Between Niches</h3>
+      <p>CPC is determined by advertiser competition in Google Ads. When a law firm is willing to pay $40 per click for an "injury lawyer near me" keyword, AdSense publishers writing about legal topics capture a fraction of that bid. The higher the commercial intent and competition in a niche, the higher your CPC.</p>
+      <h3>The Free Tool Stack</h3>
+      <ul>
+        <li><strong>Google Keyword Planner</strong> — Switch to "Top of Page Bid (high range)" to see what advertisers pay. Any keyword with $3+ bids signals a profitable niche.</li>
+        <li><strong>Google Trends</strong> — Validate that interest is stable or growing. Avoid declining niches even if CPC is high.</li>
+        <li><strong>SEMrush Free Tier</strong> — Analyze competitor sites in a potential niche to see their top-earning keywords.</li>
+      </ul>
+      <div class="callout"><strong>The 5-Niche Short List:</strong> Personal Finance, Legal, Healthcare, Insurance, and B2B Software consistently deliver $3–$15+ CPC. If you can authentically create content in any of these, the economics are compelling.</div>
+      <h3>Validation Before You Commit</h3>
+      <p>Before building a site, confirm: (1) there are at least 50 low-competition keywords with $3+ CPC, (2) the niche has stable or growing search volume, and (3) you can authentically produce content Google will trust. E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) matters more than ever in YMYL niches like finance and health.</p>
+    `
+  },
+  'adsense-approval': {
+    cat: 'Approval', date: 'Jan 29, 2025', readTime: '6 min read',
+    title: 'AdSense Approval in 2025: The 7 Mistakes That Get You Rejected',
+    lead: "Google's review process is stricter than ever. Many publishers apply too early or with avoidable policy violations. Here's how to get it right the first time.",
+    body: `
+      <h3>The 7 Common Rejection Reasons</h3>
+      <ul>
+        <li><strong>1. Insufficient content</strong> — Google wants to see a well-established site. Aim for 20–30 quality articles before applying, with a mix of long-form guides and shorter posts.</li>
+        <li><strong>2. Thin or duplicate content</strong> — Scraped, AI-generated without human editing, or content copied from other sources will trigger rejection. Every page must provide genuine value.</li>
+        <li><strong>3. Missing essential pages</strong> — About, Contact, Privacy Policy, and Disclaimer pages are expected. Their absence signals an unprofessional or potentially deceptive site.</li>
+        <li><strong>4. Navigation and UX issues</strong> — Sites that are difficult to navigate, have broken links, or display excessive pop-ups before applying are flagged by reviewers.</li>
+        <li><strong>5. Prohibited content</strong> — Any content touching adult, violent, illegal, or hateful topics — even in a corner of your site — will cause rejection.</li>
+        <li><strong>6. Too-new domain</strong> — Domains under 3–6 months old have historically faced higher rejection rates. Build content momentum first.</li>
+        <li><strong>7. Traffic from invalid sources</strong> — If you're buying cheap traffic or using bots to inflate stats, Google's systems will detect anomalous patterns.</li>
+      </ul>
+      <div class="callout"><strong>Approval Checklist:</strong> 20+ quality articles ✓ · Privacy Policy ✓ · About & Contact pages ✓ · Mobile responsive ✓ · No broken links ✓ · Custom domain ✓ · At least 3 months old ✓</div>
+    `
+  },
+  'rpm-optimization': {
+    cat: 'Optimization', date: 'Jan 22, 2025', readTime: '9 min read',
+    title: 'RPM Optimization: Why $2 vs $15 RPM Comes Down to These 5 Factors',
+    lead: 'RPM is the purest measure of your site\'s monetization efficiency. Two sites with identical traffic can earn 7x different amounts. Here are the five levers that explain the gap.',
+    body: `
+      <h3>Factor 1: Niche & Keyword Intent</h3>
+      <p>A personal finance article targeting "best balance transfer credit cards" will consistently deliver higher RPM than a general lifestyle article about "morning routines." Commercial intent keywords attract commercial-intent advertisers who pay more.</p>
+      <h3>Factor 2: Geographic Traffic Mix</h3>
+      <p>The same article earning $12 RPM from US visitors might earn $1.50 RPM from visitors in Southeast Asia. Tier-1 markets (US, UK, Canada, Australia) command 5–10x higher CPCs. Optimize content for US-centric search queries to attract this premium traffic.</p>
+      <h3>Factor 3: Device Split</h3>
+      <p>Desktop visitors historically earn 30–50% more RPM than mobile visitors. Desktop ads have more screen real estate for premium formats (300×600, 728×90), and desktop users tend to engage longer. Monitor your device split and prioritize desktop-optimized content strategies.</p>
+      <div class="callout"><strong>Quick Win:</strong> If your traffic is 80% mobile, ensure your responsive ad units are properly configured and that your mobile page experience scores above 85 in PageSpeed Insights. Slow mobile pages dramatically reduce ad viewability.</div>
+      <h3>Factor 4: Ad Density & Viewability</h3>
+      <p>More ads does not mean more money. Google's own research shows that reducing ad count can increase RPM by improving viewability scores and page experience. Aim for 2–3 well-placed, highly viewable units rather than 6–8 scattered units.</p>
+      <h3>Factor 5: Content Depth & Session Duration</h3>
+      <p>Long-form content (2,000+ words) that keeps readers on-page for 3+ minutes generates more ad impressions per session than thin content with immediate bounce. Session RPM — not just page RPM — is the metric to optimize for at scale.</p>
+    `
+  }
+};
+
+function openArticle(id) {
+  const a = articles[id];
+  if (!a) return;
+  document.getElementById('articleContent').innerHTML = `
+    <div class="post-meta"><span class="post-cat">${a.cat}</span><span class="post-date">${a.date}</span><span class="read-time">⏱ ${a.readTime}</span></div>
+    <h1>${a.title}</h1>
+    <div class="article-lead">${a.lead}</div>
+    <div class="article-body">${a.body}</div>
+  `;
+  document.getElementById('blogList').classList.add('hidden');
+  document.getElementById('articleView').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeArticle() {
+  document.getElementById('blogList').classList.remove('hidden');
+  document.getElementById('articleView').classList.remove('active');
+}
+
+// ══════════════════════════════════════════
+//  DASHBOARD CHARTS
+// ══════════════════════════════════════════
+const dashData = {
+  '7d': {
+    earnings: '$412', pageviews: '5.8K', rpm: '$7.10', ctr: '1.76%',
+    earningsChg: '+8.2%', pvChg: '+5.1%', rpmChg: '+3.2%', ctrChg: '-0.1%',
+    labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    rev:   [48, 55, 62, 58, 70, 80, 39],
+    pv:    [620, 710, 820, 790, 940, 1100, 740]
+  },
+  '30d': {
+    earnings: '$1,847', pageviews: '24.1K', rpm: '$8.42', ctr: '1.89%',
+    earningsChg: '+23.4%', pvChg: '+18.2%', rpmChg: '+4.3%', ctrChg: '-0.2%',
+    labels: ['W1','W2','W3','W4','Feb 20','Feb 23','Feb 26'],
+    rev:   [310, 390, 450, 520, 580, 620, 650],
+    pv:    [3200, 4100, 5400, 6200, 7800, 8400, 9100]
+  },
+  '90d': {
+    earnings: '$5,620', pageviews: '78K', rpm: '$9.10', ctr: '2.04%',
+    earningsChg: '+41.2%', pvChg: '+35.8%', rpmChg: '+7.1%', ctrChg: '+0.3%',
+    labels: ['Dec','Jan','Feb'],
+    rev:   [1400, 1900, 2320],
+    pv:    [21000, 28000, 29000]
+  },
+  '1y': {
+    earnings: '$18,940', pageviews: '290K', rpm: '$10.20', ctr: '2.12%',
+    earningsChg: '+112%', pvChg: '+95%', rpmChg: '+22%', ctrChg: '+0.5%',
+    labels: ['Mar','May','Jul','Sep','Nov','Jan','Mar'],
+    rev:   [800, 1200, 1900, 2800, 3400, 4200, 4640],
+    pv:    [12000, 22000, 36000, 54000, 68000, 80000, 18000]
+  }
+};
+let currentPeriod = '30d';
+
+function setPeriod(p, btn) {
+  currentPeriod = p;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const d = dashData[currentPeriod];
+
+  // KPIs
+  document.getElementById('kpi-earnings').textContent = d.earnings;
+  document.getElementById('kpi-pageviews').textContent = d.pageviews;
+  document.getElementById('kpi-rpm').textContent = d.rpm;
+  document.getElementById('kpi-ctr').textContent = d.ctr;
+
+  const changeEls = document.querySelectorAll('.kpi-change');
+  const changes = [d.earningsChg, d.pvChg, d.rpmChg, d.ctrChg];
+  changeEls.forEach((el, i) => {
+    const isUp = changes[i].startsWith('+');
+    el.className = 'kpi-change ' + (isUp ? 'up' : 'down');
+    el.textContent = (isUp ? '▲ ' : '▼ ') + changes[i];
+  });
+
+  renderLineChart(d);
+  renderDonut();
+  renderTable();
+  renderGeo();
+}
+
+function renderLineChart(d) {
+  const svg = document.getElementById('lineChart');
+  const W = 600, H = 180, pad = { top: 15, right: 15, bottom: 30, left: 42 };
+  const cW = W - pad.left - pad.right;
+  const cH = H - pad.top - pad.bottom;
+  const n = d.rev.length;
+
+  // Get CSS variable values for theming
+  const cs = getComputedStyle(document.documentElement);
+  const textDim = cs.getPropertyValue('--text-dim').trim() || '#8a8778';
+  const border = cs.getPropertyValue('--border').trim() || 'rgba(255,255,255,0.07)';
+
+  const xScale = i => pad.left + (i / (n - 1)) * cW;
+  const maxRev = Math.max(...d.rev);
+  const maxPv = Math.max(...d.pv);
+  const yRev = v => pad.top + cH - (v / maxRev) * cH;
+  const yPv = v => pad.top + cH - (v / maxPv) * cH;
+
+  // Build path
+  const revPath = d.rev.map((v,i) => (i===0?'M':'L') + xScale(i).toFixed(1) + ',' + yRev(v).toFixed(1)).join(' ');
+  const pvPath  = d.pv.map((v,i)  => (i===0?'M':'L') + xScale(i).toFixed(1) + ',' + yPv(v).toFixed(1)).join(' ');
+
+  // Area fills
+  const revArea = revPath + ` L${xScale(n-1).toFixed(1)},${(pad.top+cH).toFixed(1)} L${xScale(0).toFixed(1)},${(pad.top+cH).toFixed(1)} Z`;
+  const pvArea  = pvPath  + ` L${xScale(n-1).toFixed(1)},${(pad.top+cH).toFixed(1)} L${xScale(0).toFixed(1)},${(pad.top+cH).toFixed(1)} Z`;
+
+  // Y-axis ticks
+  const yTicks = [0, 0.25, 0.5, 0.75, 1.0].map(t => {
+    const y = pad.top + cH - t * cH;
+    const val = Math.round(maxRev * t);
+    return `<line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${W - pad.right}" y2="${y.toFixed(1)}" stroke="${border}" stroke-width="1"/>
+            <text x="${pad.left - 6}" y="${y.toFixed(1)}" text-anchor="end" dominant-baseline="middle" fill="${textDim}" font-size="9" font-family="'DM Mono',monospace">$${val}</text>`;
+  }).join('');
+
+  // X labels
+  const xLabels = d.labels.map((l, i) =>
+    `<text x="${xScale(i).toFixed(1)}" y="${H - 4}" text-anchor="middle" fill="${textDim}" font-size="9" font-family="'DM Mono',monospace">${l}</text>`
+  ).join('');
+
+  // Dots
+  const revDots = d.rev.map((v,i) =>
+    `<circle cx="${xScale(i).toFixed(1)}" cy="${yRev(v).toFixed(1)}" r="3.5" fill="#c9a84c" stroke="var(--card-bg)" stroke-width="2"/>`
+  ).join('');
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="pvGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4d8fe0" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#4d8fe0" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    ${yTicks}
+    ${xLabels}
+    <path d="${pvArea}" fill="url(#pvGrad)"/>
+    <path d="${pvPath}" fill="none" stroke="#4d8fe0" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.7"/>
+    <path d="${revArea}" fill="url(#revGrad)"/>
+    <path d="${revPath}" fill="none" stroke="#c9a84c" stroke-width="2"/>
+    ${revDots}
+  `;
+}
+
+function renderDonut() {
+  const data = [
+    { label: 'Mobile',  pct: 54, color: '#c9a84c' },
+    { label: 'Desktop', pct: 36, color: '#4d8fe0' },
+    { label: 'Tablet',  pct: 10, color: '#e05c2a' }
+  ];
+  const cx = 65, cy = 65, r = 48, stroke = 28;
+  const circumference = 2 * Math.PI * r;
+  let offset = -circumference * 0.25; // start at top
+
+  const arcs = data.map(d => {
+    const dashArray = circumference * d.pct / 100;
+    const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="${stroke}"
+      stroke-dasharray="${dashArray.toFixed(2)} ${(circumference - dashArray).toFixed(2)}"
+      stroke-dashoffset="${(-offset).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"
+      style="transition: stroke-dashoffset 0.6s ease"/>`;
+    offset += dashArray;
+    return arc;
+  }).join('');
+
+  const cs = getComputedStyle(document.documentElement);
+  const textColor = cs.getPropertyValue('--text').trim();
+  const textDim = cs.getPropertyValue('--text-dim').trim();
+
+  document.getElementById('donutChart').innerHTML = `
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bg3)" stroke-width="${stroke}"/>
+    ${arcs}
+    <text x="${cx}" y="${cy - 8}" text-anchor="middle" font-family="'Playfair Display',serif" font-size="18" fill="${textColor}" font-weight="700">54%</text>
+    <text x="${cx}" y="${cy + 10}" text-anchor="middle" font-size="9" fill="${textDim}" font-family="'DM Sans',sans-serif">Mobile</text>
+  `;
+
+  document.getElementById('donutLegend').innerHTML = data.map(d => `
+    <div class="donut-legend-item">
+      <div class="donut-legend-label">
+        <div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0"></div>
+        <span style="font-size:0.8rem">${d.label}</span>
+      </div>
+      <div class="donut-legend-bar-wrap"><div class="donut-legend-bar" style="width:${d.pct}%;background:${d.color}"></div></div>
+      <span class="donut-legend-pct">${d.pct}%</span>
+    </div>
+  `).join('');
+}
+
+function renderTable() {
+  const pages = [
+    { title: '💼 Best Balance Transfer Cards 2025', rpm: '$14.20', views: '3,840', earnings: '$54.53', trend: 'up' },
+    { title: '🏥 How to Find Affordable Health Insurance', rpm: '$9.80', views: '2,910', earnings: '$28.52', trend: 'up' },
+    { title: '⚖️ When to Hire a Personal Injury Lawyer', rpm: '$18.40', views: '1,620', earnings: '$29.81', trend: 'flat' },
+    { title: '💻 Top 10 VPN Services Reviewed', rpm: '$6.30', views: '2,200', earnings: '$13.86', trend: 'down' },
+    { title: '✈️ Best Travel Credit Cards for 2025', rpm: '$11.10', views: '1,890', earnings: '$20.98', trend: 'up' },
+  ];
+  document.getElementById('pagesTable').innerHTML = pages.map(p => `
+    <tr>
+      <td><div class="td-title">${p.title}</div></td>
+      <td style="font-family:'DM Mono',monospace;color:var(--gold)">${p.rpm}</td>
+      <td style="color:var(--text-dim)">${p.views}</td>
+      <td style="font-family:'DM Mono',monospace">${p.earnings}</td>
+      <td><span class="td-badge ${p.trend==='up'?'badge-up':p.trend==='down'?'badge-dn':'badge-fl'}">${p.trend==='up'?'↑ Up':p.trend==='down'?'↓ Down':'→ Flat'}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderGeo() {
+  const geos = [
+    { flag: '🇺🇸', country: 'United States', pct: 52, val: '$960' },
+    { flag: '🇬🇧', country: 'United Kingdom', pct: 18, val: '$332' },
+    { flag: '🇨🇦', country: 'Canada',         pct: 12, val: '$221' },
+    { flag: '🇦🇺', country: 'Australia',       pct: 8,  val: '$148' },
+    { flag: '🌍', country: 'Other',            pct: 10, val: '$186' },
+  ];
+  document.getElementById('geoList').innerHTML = geos.map(g => `
+    <div class="geo-item">
+      <div class="geo-header">
+        <span class="geo-country">${g.flag} ${g.country}</span>
+        <span class="geo-val">${g.val}</span>
+      </div>
+      <div class="geo-bar-bg">
+        <div class="geo-bar-fill" style="width:${g.pct}%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  EMAIL CTA
+// ══════════════════════════════════════════
+function submitEmail() {
+  const v = document.getElementById('homeEmail').value;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+    document.getElementById('homeEmail').style.borderColor = 'var(--accent)';
+    return;
+  }
+  document.getElementById('homeEmail').style.borderColor = '';
+  const ov = document.getElementById('tyOverlay');
+  ov.style.display = 'grid';
+}
+function closeTy() {
+  document.getElementById('tyOverlay').style.display = 'none';
+}
+
+// Theme re-render chart on change
+const themeToggleBtn = document.querySelector('.theme-toggle');
+themeToggleBtn.addEventListener('click', () => {
+  setTimeout(() => { if (currentPeriod && document.getElementById('page-dashboard').classList.contains('active')) renderDashboard(); }, 50);
+});
+
+// Init on page load
+window.addEventListener('load', () => {
+  // Pre-render dashboard for immediate display
+  renderDashboard();
+});
+</script>
+</body>
+</html>
